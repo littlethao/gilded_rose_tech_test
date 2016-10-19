@@ -1,4 +1,4 @@
-
+# Understands to update the quality value
 
 class GildedRose
 
