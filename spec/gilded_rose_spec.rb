@@ -13,13 +13,13 @@ describe GildedRose do
       items = [Item.new("nutella", 0, 20)]
       GildedRose.new(items).update_quality()
       expect(items[0].sell_in).to eq(-1)
-      expect(items[0].quality).to eq(18)
+      expect(items[0].quality).to eq(19)
     end
 
     it "degrades double in quality value when SellIn value < 0" do
-      items = [Item.new("nutella", 0, 20)]
+      items = [Item.new("nutella", -1, 20)]
       GildedRose.new(items).update_quality()
-      expect(items[0].sell_in).to eq(-1)
+      expect(items[0].sell_in).to eq(-2)
       expect(items[0].quality).to eq(18)
     end
 
@@ -52,11 +52,11 @@ describe GildedRose do
 
   describe "Backstage passes" do
     context "SellIn value > 10" do
-      it "decreases by 1 SellIn value and increases by 1 Quality value" do
+      it "decreases by 1 SellIn value and by 1 Quality value" do
         items = [Item.new("Backstage passes", 30, 10)]
         GildedRose.new(items).update_quality()
         expect(items[0].sell_in).to eq(29)
-        expect(items[0].quality).to eq(11)
+        expect(items[0].quality).to eq(9)
       end
     end
 
@@ -78,15 +78,22 @@ describe GildedRose do
       end
     end
 
-    context "SellIn value < 1" do
+    context "SellIn value < 0" do
       it "decreases by 1 SellIn value and drops to 0 Quality value" do
-        items = [Item.new("Backstage passes", 0, 10)]
+        items = [Item.new("Backstage passes", -1, 10)]
         GildedRose.new(items).update_quality()
-        expect(items[0].sell_in).to eq(-1)
+        expect(items[0].sell_in).to eq(-2)
         expect(items[0].quality).to eq(0)
       end
     end
-
   end
 
+  describe "Conjured item" do
+    it "does not degrade in both values" do
+      items = [Item.new("Conjured item", 20, 50)]
+      GildedRose.new(items).update_quality()
+      expect(items[0].sell_in).to eq(19)
+      expect(items[0].quality).to eq(48)
+    end
+  end
 end
